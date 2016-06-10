@@ -20,7 +20,8 @@ default: &default
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
-
+  username: 'postgres'
+  password: 'postgres'
 development:
   <<: *default
   database: blog_development
@@ -81,5 +82,3 @@ test:
 production:
   <<: *default
   database: blog_production
-  username: blog
-  password: <%= ENV['BLOG_DATABASE_PASSWORD'] %>
