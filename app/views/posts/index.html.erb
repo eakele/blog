@@ -1,11 +1,37 @@
 <h1>Welcom to my blog</h1>
+<% if session[:user_id].nil?%>
+<h1>Login</h1>
+<%= form_tag '/login' do%>
+<p>
+<%=label_tag :email%><br>
+<%= text_field_tag :email%><br>
+</p>
+<p>
+<%=label_tag :password%><br>
+<%= password_field_tag :password%><br>
+</p>
+<%= submit_tag "Log In"%>
+<% end %>
+<%else%>
+<% if flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+<% end %>
+<div class="menu">
+ <ul id="nav-list">
+   <li><a href="/posts/new">New Post</a></li>
+   <li><a href="/logout">Log out</a></li>
+ </ul>
+</div>
 <table>
     <tr><th>Title</th>
         <th>Content</th>
         <th>Image</th>
         <th>Category</th>
-        <th>Likes</th>
-        <th>User</th>
+        <th>Edit post</th>
+        <th>Delete post</th>
+        <th>Number of Comments</th>
+        <th>Number of Likes</th>
+        <th>Comment</th>
     </tr>
     <%@posts.each do |post|%>
     <tr>
@@ -13,10 +39,16 @@
         <td><%= post.content%></td>
         <td><img src="<%= post.image%>"/></td>
         <td><%=post.category%></td>
-        <td><a href="/posts/<%=post.id%>/comments"><%=post.comments.count%></a></td>
-        <td><%= post.user_id%></td>
-        <!-- <td><%=post.comments.where(:like => true).count%></td> -->
+        <td><a href="/posts/edit/<%=post.id%>" method: :get>Update</a></td>
+        <td><a href="/posts/destroy/<%=post.id%>" data-confirm="Are you sure?" data-method="delete">Delete</a></td>
+        <% if post.comments.count > 1%>
+        <td><%="(#{post.comments.count})  "%><a href="/posts/<%=post.id%>/comments/show">Comments</a></td>
+        <% else %>
+        <td><%="(#{post.comments.count})  "%><a href="/posts/<%=post.id%>/comments/show">Comment</a></td>
+        <% end %>
+        <td><%=post.comments.where(:like => true).count%></td>
+        <td><a href="/comments/<%=post.id%>/new">Add comment</a></td>
     </tr>
-
 <%end%>
 </table>
+<% end %>

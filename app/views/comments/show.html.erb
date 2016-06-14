@@ -1,0 +1,32 @@
+<% if session[:user_id].nil?%>
+<h1>Login</h1>
+<%= form_tag '/login' do%>
+<p>
+<%=label_tag :email%><br>
+<%= text_field_tag :email%><br>
+</p>
+<p>
+<%=label_tag :password%><br>
+<%= password_field_tag :password%><br>
+</p>
+<%= submit_tag "Log In"%>
+<% end %>
+<%else%>
+<h1>Comments</h1>
+<a href="/">Home</a>
+<% if flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+<% end %>
+<table>
+  <tr><th>Comment</th><th>User</th><th>Email</th></tr>
+  <%@comments.each do |comment|%>
+  <tr>
+      <td><%= comment.content%></td>
+      <td><%= comment.user.username%></td>
+      <td><%= comment.user.email%></td>
+      <td><a href="/comments/edit/<%=comment.id%>">Update</a></td>
+      <td><a href="/comments/destroy/<%=comment.id%>" data-confirm="Are you sure?" data-method="delete">Delete</a></td>
+  </tr>
+ <% end %>
+</table>
+<% end %>

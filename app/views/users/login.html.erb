@@ -8,7 +8,15 @@
 <% if flash[:error] %>
 <p><%= flash[:error]%></p><br>
 <% end %>
-Email:    <%= text_field_tag :email%><br>
-Password: <%= password_field_tag :password%><br>
-          <%= submit_tag "Log In"%>
+<p>
+  <%=label_tag :email%><br>
+  <%= text_field_tag :email%><br>
+</p>
+<p>
+  <%=label_tag :password%><br>
+  <%= password_field_tag :password%><br>
+</p>
+<p>
+  <%= submit_tag "Log In"%>
+</p>
 <% end %>
